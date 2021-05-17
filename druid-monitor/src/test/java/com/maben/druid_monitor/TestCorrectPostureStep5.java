@@ -1,8 +1,8 @@
 package com.maben.druid_monitor;
 
-import lombok.extern.slf4j.Slf4j;
+        import lombok.extern.slf4j.Slf4j;
 
-import static com.maben.druid_monitor.util.Sleeper.sleep;
+        import static com.maben.druid_monitor.util.Sleeper.sleep;
 
 @Slf4j(topic = "m.TestCorrectPosture")
 public class TestCorrectPostureStep5 {
