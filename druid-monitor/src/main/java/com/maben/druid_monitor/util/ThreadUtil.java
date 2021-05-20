@@ -33,6 +33,10 @@ public class ThreadUtil {
      */
     private static BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<Runnable>(17);
     /**
+     * 无界阻塞队列，可以放任意数量的任务，也不用担心队列满，不会调用拒绝策略
+     */
+    private static LinkedBlockingDeque<Runnable> workQueuenbounded = new LinkedBlockingDeque<>();
+    /**
      * 定义线程工厂
      */
     private static ThreadFactory myThreadFactory = (runnable) -> {
@@ -45,6 +49,9 @@ public class ThreadUtil {
     private static RejectedExecutionHandler rejectedExecutionHandler = (r, executor) -> {
         throw new RejectedExecutionException("当前线程池已满，请稍后操作！");
     };
+    /**
+     * 等待队列有限制，会触发拒绝机制
+     */
     public static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
             corePoolSize,
             maximumPoolSize,
@@ -53,6 +60,16 @@ public class ThreadUtil {
             workQueue,
             myThreadFactory,
             rejectedExecutionHandler
+    );
+    /**
+     * 等待队列无限制，不会触发拒绝策略
+     */
+    public static final ThreadPoolExecutor threadPoolUnbounded = new ThreadPoolExecutor(
+            corePoolSize,
+            maximumPoolSize,
+            keepAliveTime,
+            timeUnit,
+            workQueuenbounded
     );
 
     public static void main(String[] args) {

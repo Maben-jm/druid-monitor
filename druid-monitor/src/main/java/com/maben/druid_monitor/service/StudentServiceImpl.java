@@ -16,9 +16,10 @@ import java.util.concurrent.Future;
 public class StudentServiceImpl implements StudentService {
     @Resource
     private StudentMapper studentMapper;
+
     @Override
     public void save(Student student) throws Exception {
-        if (Objects.isNull(student)){
+        if (Objects.isNull(student)) {
             return;
         }
         studentMapper.insert(student);
@@ -26,13 +27,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudents(StudentQuery studentQuery) throws Exception {
-        if (Objects.isNull(studentQuery)){
+        if (Objects.isNull(studentQuery)) {
             return new ArrayList<>();
         }
         final List<Student> students = studentMapper.select(studentQuery);
         final List<Future> futures = new ArrayList<>();
         students.forEach(student -> {
-            futures.add(ThreadUtil.threadPool.submit(()->student.setName(student.getName()+"--已加密")));
+            final Runnable runnable = () -> student.setName(student.getName() + "--已加密");
+            if (studentQuery.getUnbounded() == 1) {
+                futures.add(ThreadUtil.threadPoolUnbounded.submit(runnable));
+            } else {
+                futures.add(ThreadUtil.threadPool.submit(runnable));
+            }
         });
         futures.forEach(future -> {
             try {
