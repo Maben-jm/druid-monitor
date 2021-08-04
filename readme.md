@@ -345,6 +345,10 @@ http://127.0.0.1:8080/druid/index.html
 
 ### 首页
 
+
+
+![](https://raw.githubusercontent.com/Maben-jm/base-learn/master/./images/首页.jpg)
+
 ![](./images/首页.jpg)
 
 ### SQL监控
